@@ -23,10 +23,8 @@ class CalculatorTest {
         int numberA = 1;
         int numberB = 2;
         int expectedResult = 3;
-
         // act
         int result = calculator.add(numberA, numberB);
-
         // assert
         assertEquals( expectedResult, result, "1 + 2 should equal 3" );
     }
@@ -38,10 +36,8 @@ class CalculatorTest {
         int numberA = 3;
         int numberB = 1;
         int expectedResult = 2;
-
         // act
         int result = calculator.subtract(numberA, numberB);
-
         // assert
         assertEquals( expectedResult, result, "3 - 1 should equal 2" );
     }
@@ -52,26 +48,27 @@ class CalculatorTest {
         int numberA = 2;
         int numberB = 3;
         int expectedResult = 6;
-
         // act
         int result = calculator.multiply(numberA, numberB);
-
         // assert
         assertEquals( expectedResult, result, "2 * 3 should equal 6" );
     }
 
     @Test
-    void givenDivideWhenAIs5AndBIs2ThenReturn2_5() {
+    void givenDivideWhenTwoNumbersThenReturnDivision() {
         // arrange
-        int numberA = 5;
-        int numberB = 2;
-        double expectedResult = 2.5;
+        int number5 = 5;
+        int number2 = 2;
+        int number0 = 0;
 
         // act
-        double result = calculator.divide(numberA, numberB);
-
+        double result = calculator.divide(number5, number2);
         // assert
-        assertNotEquals( 0, numberB, "B shouldn't be 0" );
-        assertEquals( expectedResult, result, "5 / 2 should equal 2.5" );
+        assertEquals( 2.5, result, "5 / 2 should equal 2.5" );
+
+        // act
+        result = calculator.divide(number5, number0);
+        // assert
+        assertEquals( true, Double.isInfinite( result ), "5 / 0 should equal Infinite" );
     }
 }
