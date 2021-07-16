@@ -1,11 +1,12 @@
 package it.euris.ires;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 class CalculatorTest {
 
@@ -43,7 +44,7 @@ class CalculatorTest {
     }
 
     @Test
-    void givenMultiplyWhenAIs2AndBIs3ThenReturn6() {
+    void given2And3WhenMultiplyThenReturn6() {
         // arrange
         int numberA = 2;
         int numberB = 3;
@@ -54,21 +55,49 @@ class CalculatorTest {
         assertEquals( expectedResult, result, "2 * 3 should equal 6" );
     }
 
-    @Test
-    void givenDivideWhenTwoNumbersThenReturnDivision() {
-        // arrange
-        int number5 = 5;
-        int number2 = 2;
-        int number0 = 0;
-
+    @ParameterizedTest(name ="given {0} and {1} WhenDivide ThenReturn {2}")
+    @CsvSource({
+            "5, 2, 2.5",
+            "-6, -3, 2",
+            "10, 0, " + Double.POSITIVE_INFINITY,
+            "-3, 0, " + Double.NEGATIVE_INFINITY
+    })
+    void divideWithBvaValues( int a, int b, double expectedResult ) {
         // act
-        double result = calculator.divide(number5, number2);
+        double result = calculator.divide(a, b);
         // assert
-        assertEquals( 2.5, result, "5 / 2 should equal 2.5" );
+        assertEquals( expectedResult, result, a + " / " + b + " should return " + expectedResult );
+    }
 
-        // act
-        result = calculator.divide(number5, number0);
-        // assert
-        assertEquals( true, Double.isInfinite( result ), "5 / 0 should equal Infinite" );
+    @ParameterizedTest(name = "GivenFirstArgument {0} AndSecondArgument {1} WhenAddThenShouldReturn {2}")
+    @CsvSource({
+            "0, 1, 1",
+            "0, -1, -1",
+            "-50, 50, 0",
+            Integer.MAX_VALUE + ", " + Integer.MAX_VALUE + ", -2"
+    })
+    void addWithBvaValues(int first, int second, int expectedResult){
+        assertEquals(expectedResult, calculator.add(first,second),
+                () -> first + " + " + second + " should equal " + expectedResult);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
