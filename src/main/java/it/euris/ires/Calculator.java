@@ -1,40 +1,42 @@
 package it.euris.ires;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class Calculator {
+	private IUser user;
 
-	public int add(int a, int b) {
-		return a + b;
+	public Calculator(IUser user) {
+		this.user = user;
 	}
-	public int subtract(int a, int b){ return a - b; }
-	public int multiply(int a, int b){ return a * b; }
-	public double divide(int a, int b){ return (double) a / (double) b; }
+
+	public void add(int a, int b) {
+		user.getValue( a + b );
+	}
+
+	public void subtract(int a, int b){
+		user.getValue( a - b );
+	}
+
+	public void multiply(int a, int b) {
+		user.getValue(a * b);
+	}
+
+	public void divide(int a, int b){
+		user.getValue ( (double) a / b );
+	}
 }
 
-class CalculatorTest {
-	private static Calculator calculator;
+interface IUser {
+	void getValue( Number value );
+}
 
-	public static void main(String[] args) throws Exception {
-		calculator = new Calculator();
+class User implements IUser {
+	private double _result = 0;
 
-		List<Integer> a = Arrays.asList(1, 2, 3, -1, -2, -3);
-		List<Integer> b = Arrays.asList(100, 3, -50, -10, 6, -2);
-		if( a.size() != b.size() )
-			throw new Exception("Array a and array b aren't the same size.");
-
-		for( int i = 0; i < a.size(); i++ )
-			test( a.get(i), b.get(i), a.get(i) + b.get(i) );
-
-		test(999999999, 999999999, 999999999 + 999999999);
-		test(-999999999, -999999999, -999999999 - 999999999);
-
-		System.out.println("Test completed without errors.");
+	public void printResult(){
+		System.out.println( _result );
 	}
 
-	private static void test( int a, int b, int c ) throws Exception {
-		if(calculator.add(a, b) != c )
-			throw new Exception("Test failure");
+	@Override
+	public void getValue(Number value) {
+		_result = value.doubleValue();
 	}
 }

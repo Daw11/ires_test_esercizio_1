@@ -4,16 +4,26 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class CalculatorTest {
 
-    private static Calculator calculator;
+    private Calculator calculator;
+
+    @Mock
+    private IUser user = new User();
+
+    @Captor
+    private ArgumentCaptor<Number> argCaptor;
 
     @BeforeEach
     void setUp() {
-        calculator = new Calculator();
+        calculator = new Calculator( user );
     }
 
     @ParameterizedTest
@@ -26,9 +36,10 @@ class CalculatorTest {
             Integer.MAX_VALUE + ", 1, " + Integer.MIN_VALUE,
     })
     void addTest(int first, int second, int expectedResult) {
-        int result = calculator.add(first, second);
+        calculator.add(first, second);
 
-        assertEquals(expectedResult, result, first + " + " + second + " should equal " + expectedResult);
+        Mockito.verify( user ).getValue( argCaptor.capture() );
+        assertEquals( expectedResult, argCaptor.getValue(),first + " + " + second + " should equal " + expectedResult  );
     }
 
     @ParameterizedTest
@@ -41,9 +52,10 @@ class CalculatorTest {
             Integer.MIN_VALUE + ", 1, " + Integer.MAX_VALUE,
     })
     void subtractTest(int first, int second, int expectedResult) {
-        int result = calculator.subtract(first, second);
+        calculator.subtract(first, second);
 
-        assertEquals(expectedResult, result, first + " - " + second + " should equal " + expectedResult);
+        Mockito.verify( user ).getValue( argCaptor.capture() );
+        assertEquals(expectedResult, argCaptor.getValue(), first + " - " + second + " should equal " + expectedResult);
     }
 
     @ParameterizedTest
@@ -55,9 +67,10 @@ class CalculatorTest {
             Integer.MAX_VALUE + ", 2, -2",
     })
     void multiplyTest(int first, int second, int expectedResult) {
-        int result = calculator.multiply(first, second);
+        calculator.multiply(first, second);
 
-        assertEquals(expectedResult, result, first + " - " + second + " should equal " + expectedResult);
+        Mockito.verify( user ).getValue( argCaptor.capture() );
+        assertEquals(expectedResult, argCaptor.getValue(), first + " - " + second + " should equal " + expectedResult);
     }
 
     @ParameterizedTest(name = "Given {0} and {1} WhenDivide ThenShouldReturn {2}")
@@ -68,9 +81,10 @@ class CalculatorTest {
             "-3, 0, " + Double.NEGATIVE_INFINITY,
     })
     void divideTest(int first, int second, double expectedResult) {
-        double result = calculator.divide(first, second);
+        calculator.divide(first, second);
 
-        assertEquals(expectedResult, result, first + " / " + second + " should return " + expectedResult);
+        Mockito.verify( user ).getValue( argCaptor.capture() );
+        assertEquals(expectedResult, argCaptor.getValue(), first + " / " + second + " should return " + expectedResult);
     }
 }
 
