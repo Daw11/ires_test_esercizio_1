@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -13,72 +12,65 @@ class CalculatorTest {
     private static Calculator calculator;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         calculator = new Calculator();
     }
 
-    @Test
-    @DisplayName("1 + 2 = 3")
-    void addsTwoNumbers() {
-        // arrange
-        int numberA = 1;
-        int numberB = 2;
-        int expectedResult = 3;
-        // act
-        int result = calculator.add(numberA, numberB);
-        // assert
-        assertEquals( expectedResult, result, "1 + 2 should equal 3" );
+    @ParameterizedTest
+    @DisplayName("Given {0} and {1} WhenAdd ThenShouldReturn {2}")
+    @CsvSource({
+            "50, 40, 90",
+            "-1, -2, -3",
+            "0, 3, 3",
+            Integer.MAX_VALUE + ", " + Integer.MAX_VALUE + ", -2",
+            Integer.MAX_VALUE + ", 1, " + Integer.MIN_VALUE,
+    })
+    void addTest(int first, int second, int expectedResult) {
+        int result = calculator.add(first, second);
+
+        assertEquals(expectedResult, result, first + " + " + second + " should equal " + expectedResult);
     }
 
-    @Test
-    @DisplayName("3 - 1 = 2")
-    void subtractTwoNumbers(){
-        // arrange
-        int numberA = 3;
-        int numberB = 1;
-        int expectedResult = 2;
-        // act
-        int result = calculator.subtract(numberA, numberB);
-        // assert
-        assertEquals( expectedResult, result, "3 - 1 should equal 2" );
+    @ParameterizedTest
+    @DisplayName("Given {0} and {1} WhenSubtract ThenShouldReturn {2}")
+    @CsvSource({
+            "50, 40, 10",
+            "-1, -2, 1",
+            "0, 3, -3",
+            Integer.MAX_VALUE + ", " + Integer.MAX_VALUE + ", 0",
+            Integer.MIN_VALUE + ", 1, " + Integer.MAX_VALUE,
+    })
+    void subtractTest(int first, int second, int expectedResult) {
+        int result = calculator.subtract(first, second);
+
+        assertEquals(expectedResult, result, first + " - " + second + " should equal " + expectedResult);
     }
 
-    @Test
-    void given2And3WhenMultiplyThenReturn6() {
-        // arrange
-        int numberA = 2;
-        int numberB = 3;
-        int expectedResult = 6;
-        // act
-        int result = calculator.multiply(numberA, numberB);
-        // assert
-        assertEquals( expectedResult, result, "2 * 3 should equal 6" );
+    @ParameterizedTest
+    @DisplayName("Given {0} and {1} WhenMultiply ThenShouldReturn {2}")
+    @CsvSource({
+            "50, 40, 2000",
+            "-1, -2, 2",
+            "0, 3, 0",
+            Integer.MAX_VALUE + ", 2, -2",
+    })
+    void multiplyTest(int first, int second, int expectedResult) {
+        int result = calculator.multiply(first, second);
+
+        assertEquals(expectedResult, result, first + " - " + second + " should equal " + expectedResult);
     }
 
-    @ParameterizedTest(name ="given {0} and {1} WhenDivide ThenReturn {2}")
+    @ParameterizedTest(name = "Given {0} and {1} WhenDivide ThenShouldReturn {2}")
     @CsvSource({
             "5, 2, 2.5",
             "-6, -3, 2",
             "10, 0, " + Double.POSITIVE_INFINITY,
-            "-3, 0, " + Double.NEGATIVE_INFINITY
+            "-3, 0, " + Double.NEGATIVE_INFINITY,
     })
-    void divideWithBvaValues( int a, int b, double expectedResult ) {
-        // act
-        double result = calculator.divide(a, b);
-        // assert
-        assertEquals( expectedResult, result, a + " / " + b + " should return " + expectedResult );
-    }
+    void divideTest(int first, int second, double expectedResult) {
+        double result = calculator.divide(first, second);
 
-    @ParameterizedTest(name = "GivenFirstArgument {0} AndSecondArgument {1} WhenAddThenShouldReturn {2}")
-    @CsvSource({
-            "0, 1, 1",
-            "0, -1, -1",
-            "-50, 50, 0",
-            Integer.MAX_VALUE + ", " + Integer.MAX_VALUE + ", -2"
-    })
-    void addWithBvaValues(int first, int second, int expectedResult){
-        assertEquals(expectedResult, calculator.add(first,second),
-                () -> first + " + " + second + " should equal " + expectedResult);
+        assertEquals(expectedResult, result, first + " / " + second + " should return " + expectedResult);
     }
 }
 
