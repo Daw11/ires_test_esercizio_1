@@ -16,7 +16,7 @@ class CalculatorTest {
     private Calculator calculator;
 
     @Mock
-    private IUser user = new User();
+    private IUser user;
 
     @Captor
     private ArgumentCaptor<Number> argCaptor;
