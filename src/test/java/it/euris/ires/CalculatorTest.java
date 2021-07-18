@@ -3,7 +3,6 @@ package it.euris.ires;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -26,8 +25,7 @@ class CalculatorTest {
         calculator = new Calculator( user );
     }
 
-    @ParameterizedTest
-    @DisplayName("Given {0} and {1} WhenAdd ThenShouldReturn {2}")
+    @ParameterizedTest(name = "Given {0} and {1} WhenAdd ThenShouldReturn {2}")
     @CsvSource({
             "50, 40, 90",
             "-1, -2, -3",
@@ -42,8 +40,7 @@ class CalculatorTest {
         assertEquals( expectedResult, argCaptor.getValue(),first + " + " + second + " should equal " + expectedResult  );
     }
 
-    @ParameterizedTest
-    @DisplayName("Given {0} and {1} WhenSubtract ThenShouldReturn {2}")
+    @ParameterizedTest(name = "Given {0} and {1} WhenSubtract ThenShouldReturn {2}")
     @CsvSource({
             "50, 40, 10",
             "-1, -2, 1",
@@ -58,8 +55,7 @@ class CalculatorTest {
         assertEquals(expectedResult, argCaptor.getValue(), first + " - " + second + " should equal " + expectedResult);
     }
 
-    @ParameterizedTest
-    @DisplayName("Given {0} and {1} WhenMultiply ThenShouldReturn {2}")
+    @ParameterizedTest(name = "Given {0} and {1} WhenMultiply ThenShouldReturn {2}")
     @CsvSource({
             "50, 40, 2000",
             "-1, -2, 2",
